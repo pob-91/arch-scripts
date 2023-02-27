@@ -1,0 +1,56 @@
+Config { font = "xft:PT Mono:pixelsize=14:antialias=true"
+       , additionalFonts = [ "xft:Mononoki Nerd Font:pixelsize=11:antialias=true"
+						   , "xft:Font Awesome 6 Free Solid:pixelsize=11"
+						   ]
+       , borderColor = "#292d3e"
+       , border = TopB
+       , bgColor = "#292d3e"
+       , fgColor = "#ff6c6b"
+       , alpha = 204
+       , position = TopW L 100 
+       , textOffset = -1
+       , iconOffset = -1
+       , lowerOnStart = True
+       , pickBroadest = False
+       , persistent = True
+       , hideOnStart = False
+       , iconRoot = "."
+       , allDesktops = True
+       , overrideRedirect = True
+       , commands = [Run Cpu [ "--template" , "<fn=1>\xf2db</fn> <total>%"
+                             , "--Low"      , "50"         -- units: %
+                             , "--High"     , "85"         -- units: %
+                             , "--low"      , "green"
+                             , "--normal"   , "orange"
+                             , "--high"     , "red"
+                             ] 10
+                    , Run Memory ["-t", "<fn=1>\xf85a</fn> Mem: <usedratio>%"] 10
+                    , Run Swap [] 10
+                    , Run Com "uname" ["-s","-r"] "" 36000
+                    , Run Date "%a %b %_d %Y - %H:%M" "date" 50
+                    , Run Com "echo" ["<fn=1>\xe712</fn>"] "penguin" 3600
+                    , Run DiskU [("/", "<fn=1>\xf7c9</fn> <free>")] [] 60
+                    , Run Battery [ "--template" , "<fc=#ffffff><fn=1>\xf578</fn></fc> <acstatus>"
+                             , "--Low"      , "10"        -- units: %
+                             , "--High"     , "80"        -- units: %
+                             , "--low"      , "red"
+                             , "--normal"   , "orange"
+                             , "--high"     , "green"
+
+                             , "--" -- battery specific options
+                                       -- discharging status
+                                       , "-o"	, "<left>% (<timeleft>)"
+                                       -- AC "on" status
+                                       , "-O"	, "<fc=#dAA520>Charging</fc>"
+                                       -- charged status
+                                       , "-i"	, "<fc=#00ff00>Charged</fc>"
+                             ] 50
+                    , Run Com "sh" [".config/xmobar/trayer-padding-icon.sh"] "trayerpad" 20
+                    , Run StdinReader
+                    ]
+       , sepChar = "%"
+       , alignSep = "}{"
+       , template = "<fc=#ffffff>%penguin%</fc> %StdinReader% <fc=#a9a1e1>%cpu%</fc> <fc=#ffffff>|</fc> <fc=#51afef>%memory%</fc> <fc=#ffffff>|</fc> <fc=#ecbe7b>%disku%</fc> }\
+                    \<fc=#ee9a00>%date%</fc>{ %uname% %trayerpad%"
+       }
+      

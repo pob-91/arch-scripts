@@ -1,0 +1,6 @@
+#!/bin/bash
+setxkbmap -layout "gb(mac)"
+
+if [ -f "$HOME/.Xmodmap" ]; then
+	xmodmap $HOME/.Xmodmap
+fi
